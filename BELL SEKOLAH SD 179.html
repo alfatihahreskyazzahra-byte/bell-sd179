@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APP BELL SD 179 MALLINRUNG</title>
+<meta name="theme-color" content="#0f172a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="BELL SD 179">
+<link rel="icon" href="logo.png">
+<link rel="apple-touch-icon" href="logo.png">
+<link rel="manifest" href='data:application/manifest+json,[STRIPPED] BELL SD 179 MALLINRUNG","short_name":"BELL SD 179","display":"standalone","background_color":"%230f172a","theme_color":"%230f172a","start_url":".","icons":[{"src":"logo.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}]}'>
+<style>
+*{box-sizing:border-box;font-family:Arial,sans-serif}
+body{margin:0;background:#0f172a;color:white;text-align:center;padding:15px;padding-bottom:40px}
+.header{background:white;padding:12px;border-radius:15px;border:2px solid #facc15}
+.header img{width:100%;max-width:420px;border-radius:10px}
+.header p{color:#0f172a;font-weight:bold;margin:5px 0 0;font-size:13px}
+#jam{font-size:55px;font-weight:bold;color:#facc15;margin:10px 0;line-height:1}
+#tanggal{font-size:14px;color:#94a3b8}
+#status{padding:10px;background:#1e293b;border-radius:10px;margin:10px 0;min-height:45px;border:1px solid #334155}
+button{width:100%;padding:16px;margin:6px 0;border:none;border-radius:12px;font-size:17px;font-weight:bold;cursor:pointer}
+button:active{transform:translateY(2px)}
+.masuk{background:#22c55e;color:white}
+.istirahat{background:#f59e0b;color:white}
+.pulang{background:#ef4444;color:white}
+.darurat{background:#8b5cf6;color:white}
+.manual{background:#0ea5e9;color:white}
+.abu{background:#475569;color:white}
+table{width:100%;background:white;color:black;border-radius:10px;overflow:hidden;margin-top:10px;border-collapse:collapse}
+td,th{padding:8px;border-bottom:1px solid #ddd;font-size:14px}
+input{padding:10px;width:45%;border-radius:8px;border:none;font-size:15px}
+select{width:100%;padding:14px;border-radius:12px;font-size:16px;font-weight:bold;margin:8px 0}
+.badge{display:inline-block;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:bold}
+.badge-on{background:#22c55e;color:white}
+.badge-off{background:#ef4444;color:white}
+</style>
+</head>
+<body>
+
+<div class="header">
+<img src="logo.png" alt="UPT SD NEGERI 179 MALLINRUNG">
+<p>APP BELL SD 179 MALLINRUNG</p>
+</div>
+
+<div id="jam">00:00:00</div>
+<div id="tanggal">-</div>
+<div id="status">Status: Menunggu jadwal... Pencet AKTIFKAN SUARA dulu</div>
+
+<button class="manual" onclick="aktifkanSuara(true)">🔊 AKTIFKAN SUARA (PENCET 1X DULU)</button>
+
+<div style="display:flex;gap:8px">
+<button style="background:#22c55e;color:white;flex:1" onclick="setMode(true)">✅ OTOMATIS ON</button>
+<button style="background:#ef4444;color:white;flex:1" onclick="setMode(false)">✋ MANUAL SAJA</button>
+</div>
+<div style="margin:8px">Mode Sekarang: <span id="modeLabel" class="badge badge-on">OTOMATIS AKTIF</span></div>
+
+<label style="font-size:15px">🎶 Pilih Suara Pembuka:</label>
+<select id="pilihanSuara">
+  <option value="dingdong">🔔 DING-DONG (Standar Sekolah)</option>
+  <option value="fanfare">🎺 FANFARE - Pengumuman Penting</option>
+  <option value="bell">🎵 BELL KLASIK - Ting Tong Panjang</option>
+  <option value="sirene">🚨 SIRENE - Apel Darurat</option>
+  <option value="lucu">🎉 LUCU - Tut Tut Tuut (Anak SD Suka)</option>
+</select>
+<button class="abu" onclick="testSuara()">🔔 TEST SUARA PEMBUKA SAJA</button>
+
+<h3>🔘 TOMBOL MANUAL - TINGGAL PENCET</h3>
+<button class="masuk" onclick="bunyi('Saatnya masuk kelas, silahkan masuk ke kelas masing-masing. Selamat belajar')">🔔 MASUK KELAS</button>
+<button class="masuk" onclick="bunyi('Upacara bendera segera dimulai, silahkan menuju lapangan dengan tertib')">🇮🇩 UPACARA / APEL</button>
+<button class="istirahat" onclick="bunyi('Saatnya istirahat, silahkan istirahat dengan tertib')">☕ ISTIRAHAT</button>
+<button class="istirahat" onclick="bunyi('Istirahat selesai, silahkan kembali ke kelas')">📚 HABIS ISTIRAHAT</button>
+<button class="istirahat" onclick="bunyi('Saatnya istirahat dan sholat dzuhur, silahkan menuju musholla')">🕌 ISTIRAHAT + SHOLAT</button>
+<button class="pulang" onclick="bunyi('Waktu pulang telah tiba, hati-hati di jalan. Sampai jumpa besok')">🏠 PULANG</button>
+<button class="darurat" onclick="bunyi('Perhatian, perhatian. Semua siswa harap berkumpul di lapangan')">📢 APEL / DARURAT</button>
+<button class="darurat" onclick="bunyi('Perhatian, anak-anak jangan pulang dulu, hujan deras. Tunggu sampai hujan reda')">🌧️ HUJAN - JANGAN PULANG</button>
+
+<h3>⏰ Jadwal Otomatis</h3>
+<p style="font-size:13px">Jadwal di bawah ini akan bunyi sendiri. HP jangan dikunci.</p>
+<table>
+<tr><th>Jam</th><th>Keterangan</th><th>Aktif</th></tr>
+<tbody id="listJadwal"></tbody>
+</table>
+
+<label style="font-size:14px">Tambah Jadwal:</label><br><br>
+<input type="time" id="jamBaru" value="07:30">
+<input type="text" id="pesanBaru" placeholder="Pesan suara...">
+<button class="manual" onclick="tambahJadwal()">+ TAMBAH JADWAL</button>
+<button style="background:#475569;color:white" onclick="resetJadwal()">Reset ke Jadwal Default</button>
+
+<p style="font-size:12px;color:#64748b;margin-top:20px">APP BELL SD 179 MALLINRUNG<br>UPT SD NEGERI 179 MALLINRUNG</p>
+
+<script>
+let suaraAktif = false;
+let modeOtomatis = true;
+let jadwalDefault = [
+  {jam:"07:00", pesan:"Selamat pagi, saatnya masuk kelas, silahkan masuk ke kelas masing-masing"},
+  {jam:"07:30", pesan:"Upacara bendera segera dimulai, silahkan menuju lapangan"},
+  {jam:"09:30", pesan:"Saatnya istirahat, silahkan istirahat dengan tertib"},
+  {jam:"10:00", pesan:"Istirahat selesai, silahkan kembali ke kelas"},
+  {jam:"12:00", pesan:"Saatnya istirahat dan sholat dzuhur"},
+  {jam:"12:45", pesan:"Istirahat selesai, silahkan kembali ke kelas"},
+  {jam:"14:00", pesan:"Waktu pulang telah tiba, hati-hati di jalan"},
+];
+let jadwal = JSON.parse(localStorage.getItem('jadwalBell179') || JSON.stringify(jadwalDefault));
+let sudahBunyi = {};
+function setMode(otomatis){
+  modeOtomatis = otomatis;
+  let label = document.getElementById('modeLabel');
+  if(otomatis){ label.innerText="OTOMATIS AKTIF"; label.className="badge badge-on"; }
+  else { label.innerText="MANUAL SAJA"; label.className="badge badge-off"; }
+}
+function tampilJam(){
+  let now = new Date();
+  let jamStr = now.toTimeString().slice(0,8);
+  document.getElementById('jam').innerText = jamStr;
+  document.getElementById('tanggal').innerText = now.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  let hm = jamStr.slice(0,5);
+  if(modeOtomatis){
+    jadwal.forEach((j,i)=>{
+      if(j.jam === hm && !sudahBunyi[hm]){
+        sudahBunyi[hm]=true;
+        document.getElementById('status').innerText = "🔔 Bunyi: "+j.pesan;
+        bunyi(j.pesan);
+        setTimeout(()=>{ delete sudahBunyi[hm]; }, 60000);
+      }
+    });
+  }
+  let html="";
+  jadwal.forEach((j,i)=>{
+    html+=`<tr><td><b>${j.jam}</b></td><td style="text-align:left">${j.pesan}</td><td><button style="width:auto;padding:5px 10px;background:red;color:white" onclick="hapus(${i})">Hapus</button></td></tr>`;
+  });
+  document.getElementById('listJadwal').innerHTML = html;
+}
+setInterval(tampilJam, 1000);
+function aktifkanSuara(manual){
+  suaraAktif=true;
+  let u = new SpeechSynthesisUtterance("Bell SD 179 Mallinrung aktif, siap digunakan");
+  u.lang='id-ID'; u.rate=0.95;
+  speechSynthesis.speak(u);
+  if(manual) alert("Suara sudah aktif! Sekarang bisa bunyi otomatis.");
+}
+function mainkanPembuka(callback){
+  let pilihan = document.getElementById('pilihanSuara').value;
+  let ctx = new (window.AudioContext||window.webkitAudioContext)();
+  let t = ctx.currentTime;
+  function nada(freq, mulai, durasi, volume=0.8, type='sine'){
+    let o = ctx.createOscillator(), g = ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.frequency.value = freq; o.type = type;
+    g.gain.setValueAtTime(volume, t + mulai);
+    g.gain.exponentialRampToValueAtTime(0.01, t + mulai + durasi);
+    o.start(t + mulai); o.stop(t + mulai + durasi);
+  }
+  let jeda = 4200;
+  if(pilihan === 'dingdong'){ nada(880, 0, 1.2); nada(659, 0.7, 1.5); nada(880, 2.0, 1.2); nada(659, 2.7, 1.5); jeda = 4200; }
+  else if(pilihan === 'fanfare'){ nada(523, 0, 0.4, 0.9, 'triangle'); nada(523, 0.5, 0.4, 0.9, 'triangle'); nada(523, 1.0, 0.4, 0.9, 'triangle'); nada(784, 1.5, 1.2, 0.9, 'triangle'); nada(1046, 1.5, 1.2, 0.5, 'sine'); jeda = 3200; }
+  else if(pilihan === 'bell'){ for(let i=0;i<4;i++){ nada(1567, i*0.9, 0.8, 0.7); nada(1174, i*0.9+0.3, 0.9, 0.7); } jeda = 4200; }
+  else if(pilihan === 'sirene'){ for(let i=0;i<3;i++){ nada(600, i*0.8, 0.4, 0.8, 'sawtooth'); nada(900, i*0.8+0.4, 0.4, 0.8, 'sawtooth'); } jeda = 3000; }
+  else if(pilihan === 'lucu'){ nada(660, 0, 0.25, 0.9, 'square'); nada(660, 0.35, 0.25, 0.9, 'square'); nada(880, 0.7, 0.5, 0.9, 'square'); nada(990, 1.3, 0.6, 0.9, 'square'); jeda = 2500; }
+  if(callback) setTimeout(callback, jeda);
+}
+function bunyi(pesan){
+  if(!suaraAktif) aktifkanSuara(false);
+  document.getElementById('status').innerText = "🔔 Suara Pembuka...";
+  mainkanPembuka(()=>{
+    speechSynthesis.cancel();
+    let u = new SpeechSynthesisUtterance(pesan);
+    u.lang='id-ID'; u.rate=0.92; u.volume=1;
+    speechSynthesis.speak(u);
+    document.getElementById('status').innerText = "🔊 " + pesan;
+  });
+}
+function testSuara(){ if(!suaraAktif) aktifkanSuara(false); mainkanPembuka(()=>{ document.getElementById('status').innerText="✅ Test Suara Berhasil"; }); }
+function tambahJadwal(){
+  let j=document.getElementById('jamBaru').value;
+  let p=document.getElementById('pesanBaru').value;
+  if(!j||!p) return alert("Isi jam dan pesan dulu");
+  jadwal.push({jam:j,pesan:p});
+  localStorage.setItem('jadwalBell179', JSON.stringify(jadwal));
+  document.getElementById('pesanBaru').value="";
+  alert("Jadwal ditambahkan: "+j);
+}
+function hapus(i){ jadwal.splice(i,1); localStorage.setItem('jadwalBell179', JSON.stringify(jadwal)); }
+function resetJadwal(){ jadwal=jadwalDefault; localStorage.setItem('jadwalBell179', JSON.stringify(jadwal)); alert("Kembali ke default"); }
+if('serviceWorker' in navigator){
+  const swCode = `self.addEventListener('fetch', e=>{ e.respondWith(fetch(e.request).catch(()=>caches.match(e.request))); });`;
+  const blob = new Blob([swCode], {type:'text/javascript'});
+  const swUrl = URL.createObjectURL(blob);
+  navigator.serviceWorker.register(swUrl).catch(()=>{});
+}
+</script>
+</body>
+</html>
