@@ -10,7 +10,7 @@
 <meta name="apple-mobile-web-app-title" content="BELL SD 179">
 <link rel="icon" href="logo.png">
 <link rel="apple-touch-icon" href="logo.png">
-<link rel="manifest" href='data:application/manifest+json,[STRIPPED] BELL SD 179 MALLINRUNG","short_name":"BELL SD 179","display":"standalone","background_color":"%230f172a","theme_color":"%230f172a","start_url":".","icons":[{"src":"logo.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}]}'>
+<link rel="manifest" href="manifest.json">
 <style>
 *{box-sizing:border-box;font-family:Arial,sans-serif}
 body{margin:0;background:#0f172a;color:white;text-align:center;padding:15px;padding-bottom:40px}
@@ -38,24 +38,19 @@ select{width:100%;padding:14px;border-radius:12px;font-size:16px;font-weight:bol
 </style>
 </head>
 <body>
-
 <div class="header">
 <img src="logo.png" alt="UPT SD NEGERI 179 MALLINRUNG">
 <p>APP BELL SD 179 MALLINRUNG</p>
 </div>
-
 <div id="jam">00:00:00</div>
 <div id="tanggal">-</div>
 <div id="status">Status: Menunggu jadwal... Pencet AKTIFKAN SUARA dulu</div>
-
 <button class="manual" onclick="aktifkanSuara(true)">🔊 AKTIFKAN SUARA (PENCET 1X DULU)</button>
-
 <div style="display:flex;gap:8px">
 <button style="background:#22c55e;color:white;flex:1" onclick="setMode(true)">✅ OTOMATIS ON</button>
 <button style="background:#ef4444;color:white;flex:1" onclick="setMode(false)">✋ MANUAL SAJA</button>
 </div>
 <div style="margin:8px">Mode Sekarang: <span id="modeLabel" class="badge badge-on">OTOMATIS AKTIF</span></div>
-
 <label style="font-size:15px">🎶 Pilih Suara Pembuka:</label>
 <select id="pilihanSuara">
   <option value="dingdong">🔔 DING-DONG (Standar Sekolah)</option>
@@ -65,7 +60,6 @@ select{width:100%;padding:14px;border-radius:12px;font-size:16px;font-weight:bol
   <option value="lucu">🎉 LUCU - Tut Tut Tuut (Anak SD Suka)</option>
 </select>
 <button class="abu" onclick="testSuara()">🔔 TEST SUARA PEMBUKA SAJA</button>
-
 <h3>🔘 TOMBOL MANUAL - TINGGAL PENCET</h3>
 <button class="masuk" onclick="bunyi('Saatnya masuk kelas, silahkan masuk ke kelas masing-masing. Selamat belajar')">🔔 MASUK KELAS</button>
 <button class="masuk" onclick="bunyi('Upacara bendera segera dimulai, silahkan menuju lapangan dengan tertib')">🇮🇩 UPACARA / APEL</button>
@@ -75,22 +69,18 @@ select{width:100%;padding:14px;border-radius:12px;font-size:16px;font-weight:bol
 <button class="pulang" onclick="bunyi('Waktu pulang telah tiba, hati-hati di jalan. Sampai jumpa besok')">🏠 PULANG</button>
 <button class="darurat" onclick="bunyi('Perhatian, perhatian. Semua siswa harap berkumpul di lapangan')">📢 APEL / DARURAT</button>
 <button class="darurat" onclick="bunyi('Perhatian, anak-anak jangan pulang dulu, hujan deras. Tunggu sampai hujan reda')">🌧️ HUJAN - JANGAN PULANG</button>
-
 <h3>⏰ Jadwal Otomatis</h3>
 <p style="font-size:13px">Jadwal di bawah ini akan bunyi sendiri. HP jangan dikunci.</p>
 <table>
 <tr><th>Jam</th><th>Keterangan</th><th>Aktif</th></tr>
 <tbody id="listJadwal"></tbody>
 </table>
-
 <label style="font-size:14px">Tambah Jadwal:</label><br><br>
 <input type="time" id="jamBaru" value="07:30">
 <input type="text" id="pesanBaru" placeholder="Pesan suara...">
 <button class="manual" onclick="tambahJadwal()">+ TAMBAH JADWAL</button>
 <button style="background:#475569;color:white" onclick="resetJadwal()">Reset ke Jadwal Default</button>
-
 <p style="font-size:12px;color:#64748b;margin-top:20px">APP BELL SD 179 MALLINRUNG<br>UPT SD NEGERI 179 MALLINRUNG</p>
-
 <script>
 let suaraAktif = false;
 let modeOtomatis = true;
@@ -185,10 +175,7 @@ function tambahJadwal(){
 function hapus(i){ jadwal.splice(i,1); localStorage.setItem('jadwalBell179', JSON.stringify(jadwal)); }
 function resetJadwal(){ jadwal=jadwalDefault; localStorage.setItem('jadwalBell179', JSON.stringify(jadwal)); alert("Kembali ke default"); }
 if('serviceWorker' in navigator){
-  const swCode = `self.addEventListener('fetch', e=>{ e.respondWith(fetch(e.request).catch(()=>caches.match(e.request))); });`;
-  const blob = new Blob([swCode], {type:'text/javascript'});
-  const swUrl = URL.createObjectURL(blob);
-  navigator.serviceWorker.register(swUrl).catch(()=>{});
+  navigator.serviceWorker.register('sw.js').catch(()=>{});
 }
 </script>
 </body>
