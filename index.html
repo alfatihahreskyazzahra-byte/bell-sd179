@@ -40,7 +40,7 @@ select{width:100%;padding:14px;border-radius:12px;font-size:16px;font-weight:bol
 <body>
 <div class="header">
 <img src="logo.png" alt="UPT SD NEGERI 179 MALLINRUNG">
-<p>APP BELL SD 179 MALLINRUNG</p>
+<p>APP BELL SDN 179 MALLINRUNG</p>
 </div>
 <div id="jam">00:00:00</div>
 <div id="tanggal">-</div>
@@ -62,7 +62,7 @@ select{width:100%;padding:14px;border-radius:12px;font-size:16px;font-weight:bol
 <button class="abu" onclick="testSuara()">🔔 TEST SUARA PEMBUKA SAJA</button>
 <h3><img src="tombol.png" style="width:28px;vertical-align:middle"> TOMBOL MANUAL - TINGGAL PENCET</h3>
 <button class="masuk" onclick="bunyi('Saatnya masuk kelas, silahkan masuk ke kelas masing-masing. Selamat belajar')">🔔 MASUK KELAS</button>
-<button class="masuk" onclick="bunyi('Upacara bendera segera dimulai, silahkan menuju lapangan dengan tertib')">🇮🇩 UPACARA / APEL</button>
+<button class="masuk" onclick="bunyi('Upacara bendera segera dimulai, silahkan menuju lapangan dengan tertib')"><img src="bendera.png" style="width:28px;vertical-align:middle"> UPACARA / APEL</button>
 <button class="istirahat" onclick="bunyi('Saatnya istirahat, silahkan istirahat dengan tertib')">☕ ISTIRAHAT</button>
 <button class="istirahat" onclick="bunyi('Istirahat selesai, silahkan kembali ke kelas')">📚 HABIS ISTIRAHAT</button>
 <button class="istirahat" onclick="bunyi('Saatnya istirahat dan sholat dzuhur, silahkan menuju musholla')">🕌 ISTIRAHAT + SHOLAT</button>
@@ -81,7 +81,7 @@ select{width:100%;padding:14px;border-radius:12px;font-size:16px;font-weight:bol
 <input type="text" id="pesanBaru" placeholder="Pesan suara...">
 <button class="manual" onclick="tambahJadwal()">+ TAMBAH JADWAL</button>
 <button style="background:#475569;color:white" onclick="resetJadwal()">Reset ke Jadwal Default</button>
-<p style="font-size:12px;color:#64748b;margin-top:20px">APP BELL SD 179 MALLINRUNG<br>UPT SD NEGERI 179 MALLINRUNG</p>
+<p style="font-size:12px;color:#64748b;margin-top:20px">APP BELL SDN 179 MALLINRUNG<br>UPT SD NEGERI 179 MALLINRUNG<br>By.AnnoV1</p>
 <script>
 let suaraAktif = false;
 let modeOtomatis = true;
@@ -127,7 +127,7 @@ function tampilJam(){
 setInterval(tampilJam, 1000);
 function aktifkanSuara(manual){
   suaraAktif=true;
-  let u = new SpeechSynthesisUtterance("Bell SD 179 Mallinrung aktif, siap digunakan");
+  let u = new SpeechSynthesisUtterance("Bell SDN 179 Mallinrung aktif, siap digunakan");
   u.lang='id-ID'; u.rate=0.95;
   speechSynthesis.speak(u);
   if(manual) alert("Suara sudah aktif! Sekarang bisa bunyi otomatis.");
